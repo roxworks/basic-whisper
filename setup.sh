@@ -56,10 +56,27 @@ echo "Installing Whisper and dependencies..."
 pip install openai-whisper
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 
-# Step 8: Download test MP3 file
-echo "Downloading test MP3 file..."
-curl -o test.mp3 "https://traffic.megaphone.fm/NSR6725884392.mp3?updated=1734658129"
-echo "Test MP3 file downloaded as test.mp3."
+# Step 8: Download test MP3 file# Step 8: Download test MP3 file
+echo "Resolving final URL for test MP3 file..."
+final_url=$(curl -Is "https://traffic.megaphone.fm/NSR6725884392.mp3?updated=1734658129" | grep -i 'location:' | awk '{print $2}' | tr -d '\r')
+
+if [ -z "$final_url" ]; then
+    echo "Failed to resolve the final URL. Exiting."
+    exit 1
+fi
+
+echo "Downloading test MP3 file from resolved URL: $final_url"
+curl -o test.mp3 "$final_url"
+
+# Verify the download
+if [ ! -s test.mp3 ]; then
+    echo "Download failed or the file is empty. Exiting."
+    exit 1
+fi
+
+echo "Test MP3 file downloaded successfully as test.mp3."
+
+echo "--------------------------------"
 
 echo "Setup complete. To use, run the following commands:"
 echo "source whisperenv/bin/activate"
