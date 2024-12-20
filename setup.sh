@@ -3,7 +3,7 @@ set -e
 
 echo "Starting DigitalOcean box setup..."
 
-# Step 1: Configure swap space (4GB)
+# Step 1: Configure swap space (6GB)
 echo "Checking for existing swap space..."
 if [ -f /swapfile ]; then
     echo "Swap file already exists. Checking if it is active..."
@@ -15,13 +15,13 @@ if [ -f /swapfile ]; then
         echo "Swap file activated."
     fi
 else
-    echo "No existing swap file found. Creating a new 4GB swap file..."
-    sudo fallocate -l 4G /swapfile
+    echo "No existing swap file found. Creating a new 6GB swap file..."
+    sudo fallocate -l 6G /swapfile
     sudo chmod 600 /swapfile
     sudo mkswap /swapfile
     sudo swapon /swapfile
     echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
-    echo "Swap space configured (4GB)."
+    echo "Swap space configured (6GB)."
 fi
 
 # Step 2: Update packages
