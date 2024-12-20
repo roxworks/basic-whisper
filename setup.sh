@@ -9,27 +9,27 @@ current_swap_size=$(free -h | awk '/Swap:/ {print $2}')
 
 if [ -f /swapfile ]; then
     echo "Swap file detected. Current swap size: $current_swap_size"
-    if [ "$current_swap_size" != "6.0G" ]; then
-        echo "Swap size is incorrect. Replacing with a 6GB swap file..."
+    if [ "$current_swap_size" != "5.0G" ]; then
+        echo "Swap size is incorrect. Replacing with a 5GB swap file..."
         sudo swapoff /swapfile
         sudo rm -f /swapfile
-        sudo fallocate -l 6G /swapfile
+        sudo fallocate -l 5G /swapfile
         sudo chmod 600 /swapfile
         sudo mkswap /swapfile
         sudo swapon /swapfile
         echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
-        echo "Swap space reconfigured to 6GB."
+        echo "Swap space reconfigured to 5GB."
     else
-        echo "Swap size is already correctly configured (6GB)."
+        echo "Swap size is already correctly configured (5GB)."
     fi
 else
-    echo "No swap file detected. Creating a new 6GB swap file..."
-    sudo fallocate -l 6G /swapfile
+    echo "No swap file detected. Creating a new 5GB swap file..."
+    sudo fallocate -l 5G /swapfile
     sudo chmod 600 /swapfile
     sudo mkswap /swapfile
     sudo swapon /swapfile
     echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
-    echo "Swap space configured (6GB)."
+    echo "Swap space configured (5GB)."
 fi
 
 # Step 2: Update packages
