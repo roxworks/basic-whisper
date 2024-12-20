@@ -1,16 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-### Digital Ocean Setup Start
 echo "Starting DigitalOcean box setup..."
 
-# Update packages
-sudo apt update
-
-# Install required packages
-sudo apt install -y ffmpeg python3 python3-pip python3-venv curl
-
-# Configure swap space (4GB)
+# Step 1: Configure swap space (4GB)
 echo "Configuring swap space..."
 sudo fallocate -l 4G /swapfile
 sudo chmod 600 /swapfile
@@ -19,25 +12,31 @@ sudo swapon /swapfile
 echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
 echo "Swap space configured (4GB)."
 
-### Digital Ocean Setup End
+# Step 2: Update packages
+echo "Updating packages..."
+sudo apt update
 
-# Create Python virtual environment
+# Step 3: Install required packages
+echo "Installing required packages..."
+sudo apt install -y ffmpeg python3 python3-pip python3-venv curl
+
+# Step 4: Create Python virtual environment
 echo "Creating Python virtual environment..."
 python3 -m venv whisperenv
 
-# Activate the virtual environment
+# Step 5: Activate the virtual environment
 source whisperenv/bin/activate
 
-# Upgrade pip
+# Step 6: Upgrade pip
 echo "Upgrading pip..."
 pip install --upgrade pip
 
-# Install Whisper and dependencies
+# Step 7: Install Whisper and dependencies
 echo "Installing Whisper and dependencies..."
 pip install openai-whisper
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 
-# Download test MP3 file
+# Step 8: Download test MP3 file
 echo "Downloading test MP3 file..."
 curl -o test.mp3 "https://traffic.megaphone.fm/NSR6725884392.mp3?updated=1734658129"
 echo "Test MP3 file downloaded as test.mp3."
